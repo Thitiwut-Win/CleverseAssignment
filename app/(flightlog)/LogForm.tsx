@@ -25,7 +25,7 @@ function LogForm({ style, data, type, onSubmit }: { style?: CSSProperties, data:
   }, []);
 
   return (
-    <form style={{ display: "flex", columnGap: 8, ...style }} onClick={(e) => { e.preventDefault(); handleSubmit(); }}>
+    <form style={{ display: "flex", columnGap: 8, ...style }}>
       <div
         style={{ flex: 1, display: "flex", flexDirection: "column", rowGap: 4 }}
       >
@@ -69,7 +69,7 @@ function LogForm({ style, data, type, onSubmit }: { style?: CSSProperties, data:
         />
       </div>
       <div style={{ flex: 1, display: "flex", alignItems: "flex-end" }}>
-        <button type="submit">Submit</button>
+        <button type="submit" onClick={(e) => { e.preventDefault(); handleSubmit(); }}>Submit</button>
       </div>
     </form>
   );
