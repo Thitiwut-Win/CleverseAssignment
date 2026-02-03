@@ -168,7 +168,31 @@ export default function Home() {
         <div className={styles.card} style={{ margin: 16, width: "100%" }}>
           <h2>Boarding Passes</h2>
 
-          <BoardingPassCard />
+          {logs.map((log, index) => {
+            if (log.type !== "arrival") return null;
+
+            const departure = logs
+              .slice(0, index)
+              .findLast(
+                l =>
+                  l.passengerName === log.passengerName &&
+                  l.type === "departure"
+              );
+
+            if (!departure) return null;
+
+            return (
+              <BoardingPassCard
+                key={`${log.passengerName}-${log.timestamp}`}
+                passengerName={log.passengerName}
+                from={departure.airport}
+                to={log.airport}
+                departureTime={departure.timestamp}
+                arrivalTime={log.timestamp}
+                style={{ marginBottom: 16 }}
+              />
+            );
+          })}
         </div>
       </main>
 

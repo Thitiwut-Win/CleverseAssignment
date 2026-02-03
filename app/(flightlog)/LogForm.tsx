@@ -12,7 +12,15 @@ function LogForm({ style, data, type, onSubmit }: { style?: CSSProperties, data:
   const [formData, setFormData] = useState(emptyForm);
 
   const handleSubmit = useCallback(() => {
-    onSubmit({ ...formData, type });
+    const timestampNumber = Math.floor(
+      new Date(formData.timestamp).getTime() / 1000
+    );
+    onSubmit({
+      passengerName: formData.passengerName,
+      airport: formData.airport,
+      timestamp: timestampNumber,
+      type,
+    });
     setFormData(emptyForm);
   }, [formData, type, onSubmit]);
 
@@ -61,9 +69,8 @@ function LogForm({ style, data, type, onSubmit }: { style?: CSSProperties, data:
           Timestamp:
         </label>
         <input
-          type="text"
+          type="datetime-local"
           id="timestamp"
-          name="timestamp"
           value={formData.timestamp}
           onChange={handleChange}
         />
