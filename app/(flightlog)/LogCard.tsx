@@ -1,13 +1,8 @@
-import { useState, useEffect } from "react";
 import LogItem from "./LogItem";
+import { FlightLog } from "@/types/FlightLog";
 
-function LogCard(props) {
-  const { data } = props;
-  const [logs, setLogs] = useState(data);
-
-  useEffect(() => {
-    setLogs(data);
-  }, [data]);
+function LogCard({ props }: { props: FlightLog[] }) {
+  const data = props;
 
   return (
     <div
@@ -30,7 +25,7 @@ function LogCard(props) {
         <span style={{ flex: 1 }}>Timestamp</span>
         <span style={{ flex: 1 }}>Type</span>
       </div>
-      {logs.map((item) => (
+      {data.map((item) => (
         <LogItem key={`${item.passengerName}`} item={item}></LogItem>
       ))}
     </div>
