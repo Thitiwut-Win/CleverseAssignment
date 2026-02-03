@@ -1,5 +1,7 @@
+import { FlightLog } from "@/types/FlightLog";
+
 export class FlightLogService {
-  initialData = [
+  initialData: FlightLog[] = [
     {
       passengerName: "cherprang",
       airport: "bangkok",
