@@ -1,5 +1,5 @@
 import { FlightLog } from "@/types/FlightLog";
-import { useState, useCallback, CSSProperties } from "react";
+import React, { useState, useCallback, CSSProperties } from "react";
 
 const emptyForm = {
   passengerName: "",
@@ -16,10 +16,11 @@ function LogForm({ style, data, type, onSubmit }: { style?: CSSProperties, data:
     setFormData(emptyForm);
   }, [formData, type, onSubmit]);
 
-  const handleChange = useCallback(({ target }) => {
+  const handleChange = useCallback((target: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = target.target
     setFormData((prev) => ({
       ...prev,
-      [target.id]: target.value,
+      [id]: value,
     }));
   }, []);
 
