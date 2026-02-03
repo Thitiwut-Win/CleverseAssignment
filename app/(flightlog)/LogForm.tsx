@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { FlightLog } from "@/types/FlightLog";
+import { useState, useCallback, CSSProperties } from "react";
 
 const emptyForm = {
   passengerName: "",
@@ -6,8 +7,7 @@ const emptyForm = {
   timestamp: "",
 };
 
-function LogForm(props) {
-  const { type, onSubmit } = props;
+function LogForm({ style, data, type, onSubmit }: { style?: CSSProperties, data: FlightLog[], type: "departure" | "arrival", onSubmit: Function }) {
 
   const [formData, setFormData] = useState(emptyForm);
 
@@ -24,7 +24,7 @@ function LogForm(props) {
   }, []);
 
   return (
-    <div style={{ display: "flex", columnGap: 8 }}>
+    <div style={{ display: "flex", columnGap: 8, ...style }}>
       <div
         style={{ flex: 1, display: "flex", flexDirection: "column", rowGap: 4 }}
       >
