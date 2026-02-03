@@ -1,13 +1,13 @@
 "use client";
 
-import { useCallback, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./Home.module.css";
 import { FlightLogService } from "../(flightlog)/fightlog.service";
 import LogCard from "../(flightlog)/LogCard";
 import LogForm from "../(flightlog)/LogForm";
 import { FlightLog } from "@/types/FlightLog";
-// import BoardingPassCard from "../(boardingpass)/BoardingPassCard";
+import BoardingPassCard from "../(boardingpass)/BoardingPassCard";
 
 const flightLogService = new FlightLogService();
 
@@ -165,10 +165,11 @@ export default function Home() {
             );
           })}
         </div>
-        {/* Render boarding pass here */}
-        {/* {[].map((_, i) => ( */}
-        {/*   <BoardingPassCard key={i} /> */}
-        {/* ))} */}
+        <div className={styles.card} style={{ margin: 16, width: "100%" }}>
+          <h2>Boarding Passes</h2>
+
+          <BoardingPassCard />
+        </div>
       </main>
 
       <footer className={styles.footer}>
