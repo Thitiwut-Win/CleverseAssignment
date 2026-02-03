@@ -1,12 +1,14 @@
+import { CSSProperties } from "react";
 import LogItem from "./LogItem";
 import { FlightLog } from "@/types/FlightLog";
 
-function LogCard({ data }: { data: FlightLog[] }) {
+function LogCard({ style, data }: { style?: CSSProperties, data: FlightLog[] }) {
 
   return (
     <div
       style={{
         display: "flex",
+        ...style,
         flexDirection: "column",
         rowGap: 4,
       }}
