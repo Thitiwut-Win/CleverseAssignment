@@ -1,6 +1,5 @@
 import { FlightLog } from "@/types/FlightLog";
-function LogItem({ props }: { props: FlightLog }) {
-  const item = props;
+function LogItem({ item }: { item: FlightLog }) {
   return (
     <div style={{ display: "flex" }}>
       <span style={{ flex: 1 }}>{item.passengerName}</span>

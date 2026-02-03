@@ -1,8 +1,7 @@
 import LogItem from "./LogItem";
 import { FlightLog } from "@/types/FlightLog";
 
-function LogCard({ props }: { props: FlightLog[] }) {
-  const data = props;
+function LogCard({ data }: { data: FlightLog[] }) {
 
   return (
     <div
