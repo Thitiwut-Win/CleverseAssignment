@@ -26,8 +26,8 @@ function LogCard({ style, data }: { style?: CSSProperties, data: FlightLog[] }) 
         <span style={{ flex: 1 }}>Timestamp</span>
         <span style={{ flex: 1 }}>Type</span>
       </div>
-      {data.map((item) => (
-        <LogItem key={`${item.passengerName}`} item={item}></LogItem>
+      {data.map((item, idx) => (
+        <LogItem key={`${item.passengerName}-${idx}`} item={item}></LogItem>
       ))}
     </div>
   );
