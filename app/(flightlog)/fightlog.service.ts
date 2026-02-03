@@ -23,9 +23,10 @@ export class FlightLogService {
   ];
 
   getLogs() {
+    const data = this.initialData;
     return new Promise(function (resolve) {
-      setTimeout(function () {
-        resolve(this.initialData || []);
+      setTimeout(() => {
+        resolve(data || []);
       }, 2000);
     });
   }
