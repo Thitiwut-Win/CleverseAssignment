@@ -14,13 +14,9 @@ const flightLogService = new FlightLogService();
 export default function Home() {
   const [logs, setLogs] = useState<FlightLog[]>([]);
 
-  const handleAddLog = useCallback(
-    (log) => {
-      logs.push(log);
-      setLogs(logs);
-    },
-    [logs]
-  );
+  const handleAddLog = (log: FlightLog) => {
+    setLogs(prev => [...prev, log]);
+  };
 
   useEffect(() => {
     const fetch = async () => {
