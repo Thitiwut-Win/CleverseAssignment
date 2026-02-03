@@ -28,13 +28,13 @@ function LogForm({ style, data, type, onSubmit }: { style?: CSSProperties, data:
       <div
         style={{ flex: 1, display: "flex", flexDirection: "column", rowGap: 4 }}
       >
-        <label htmlFor="pname" style={{ fontWeight: "bold" }}>
+        <label htmlFor="passengerName" style={{ fontWeight: "bold" }}>
           Passenger Name:
         </label>
         <input
           type="text"
-          id="pname"
-          name="pname"
+          id="passengerName"
+          name="passengerName"
           value={formData.passengerName}
           onChange={handleChange}
         />
