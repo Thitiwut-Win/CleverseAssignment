@@ -16,8 +16,8 @@ function LogForm({ style, data, type, onSubmit }: { style?: CSSProperties, data:
     setFormData(emptyForm);
   }, [formData, type, onSubmit]);
 
-  const handleChange = useCallback((target: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = target.target
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [id]: value,
