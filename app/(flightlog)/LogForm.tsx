@@ -7,7 +7,7 @@ const emptyForm = {
   timestamp: "",
 };
 
-function LogForm({ style, data, type, onSubmit }: { style?: CSSProperties, data: FlightLog[], type: "departure" | "arrival", onSubmit: Function }) {
+function LogForm({ style, type, onSubmit }: { style?: CSSProperties, type: "departure" | "arrival", onSubmit: Function }) {
 
   const [formData, setFormData] = useState(emptyForm);
 

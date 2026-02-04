@@ -19,25 +19,35 @@ type AverageRecord = Record<
 export default function Home() {
   const [logs, setLogs] = useState<FlightLog[]>([]);
   const [averageRecord, setAverageRecord] = useState<AverageRecord>({});
-  const [activeDepartures, setActiveDepartures] = useState<Record<string, number>>({});
+  const [activeDepartures, setActiveDepartures] = useState<Record<string, { time: number; from: string }>>({});
 
   const handleAddLog = (log: FlightLog) => {
-    setLogs(prev => [...prev, log]);
+    if (!log.passengerName || !log.airport || !log.timestamp) return;
+
+    if (log.type === "arrival" && !activeDepartures[log.passengerName]) return;
+
+    if (log.type === "arrival" && log.timestamp < activeDepartures[log.passengerName].time) return;
+
+    if (log.type === "arrival" && log.airport === activeDepartures[log.passengerName].from) return;
 
     if (log.type === "departure") {
       setActiveDepartures(prev => ({
         ...prev,
-        [log.passengerName]: log.timestamp,
+        [log.passengerName]: {
+          time: log.timestamp,
+          from: log.airport,
+        }
       }));
+      setLogs(prev => [...prev, log]);
       return;
     }
 
     if (log.type === "arrival") {
       setActiveDepartures(prevDepartures => {
-        const departureTime = prevDepartures[log.passengerName];
-        if (!departureTime) return prevDepartures;
+        const departure = prevDepartures[log.passengerName];
 
-        const duration = log.timestamp - departureTime;
+        const duration = log.timestamp - departure.time;
+        setLogs(prev => [...prev, log]);
 
         setAverageRecord(prevAvg => {
           const current = prevAvg[log.passengerName] ?? {
@@ -66,18 +76,19 @@ export default function Home() {
       setLogs(data);
 
       const avg: AverageRecord = {};
-      const departures: Record<string, number> = {};
+      const departures: Record<string, { time: number; from: string }> = {};
 
       for (const log of data) {
         if (log.type === "departure") {
-          departures[log.passengerName] = log.timestamp;
+          departures[log.passengerName].time = log.timestamp;
+          departures[log.passengerName].from = log.airport;
         }
 
         if (log.type === "arrival") {
           const dep = departures[log.passengerName];
           if (!dep) continue;
 
-          const duration = log.timestamp - dep;
+          const duration = log.timestamp - dep.time;
 
           const current = avg[log.passengerName] ?? {
             totalTime: 0,
@@ -109,10 +120,12 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next Airline!</a>
         </h1>
+        {/*
         <p className={styles.description}>
           Get started by editing{" "}
           <code className={styles.code}>app/(home)/page.tsx</code>
         </p>
+        */}
         <div className={styles.card} style={{ margin: 16, width: "100%" }}>
           <h2>Flight Logs</h2>
           <LogCard style={{ width: "100%" }} data={logs}></LogCard>
@@ -121,7 +134,6 @@ export default function Home() {
           <h2>Departure Logging</h2>
           <LogForm
             style={{ width: "100%" }}
-            data={logs}
             type={"departure"}
             onSubmit={handleAddLog}
           ></LogForm>
@@ -130,7 +142,6 @@ export default function Home() {
           <h2>Arrival Logging</h2>
           <LogForm
             style={{ width: "100%" }}
-            data={logs}
             type={"arrival"}
             onSubmit={handleAddLog}
           ></LogForm>
@@ -147,10 +158,9 @@ export default function Home() {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  marginBottom: 8,
                 }}
               >
-                <span>
+                <span style={{ alignContent: "center" }}>
                   {name}: {avg}
                 </span>
 
@@ -158,6 +168,19 @@ export default function Home() {
                   onClick={() =>
                     console.log(`Average time for ${name}:`, avg)
                   }
+                  style={{
+                    padding: "10px 20px",
+                    borderRadius: 999,
+                    border: "none",
+                    fontWeight: 700,
+                    letterSpacing: "0.05em",
+                    color: "white",
+                    cursor: "pointer",
+                    background: `linear-gradient(135deg, #3b82f6)`,
+                    boxShadow: `0 8px 20px 55`,
+                    transition: "transform 0.15s ease",
+                    marginTop: "10px"
+                  }}
                 >
                   Print
                 </button>
