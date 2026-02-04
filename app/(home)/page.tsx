@@ -30,6 +30,8 @@ export default function Home() {
 
     if (log.type === "arrival" && log.airport === activeDepartures[log.passengerName].from) return;
 
+    if (log.type === "departure" && activeDepartures[log.passengerName]) return;
+
     if (log.type === "departure") {
       setActiveDepartures(prev => ({
         ...prev,
@@ -80,8 +82,10 @@ export default function Home() {
 
       for (const log of data) {
         if (log.type === "departure") {
-          departures[log.passengerName].time = log.timestamp;
-          departures[log.passengerName].from = log.airport;
+          departures[log.passengerName] = {
+            time: log.timestamp,
+            from: log.airport,
+          };
         }
 
         if (log.type === "arrival") {
