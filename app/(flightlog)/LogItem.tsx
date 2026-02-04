@@ -1,7 +1,7 @@
 import { FlightLog } from "@/types/FlightLog";
 function LogItem({ item }: { item: FlightLog }) {
   const date = new Date(item.timestamp * 1000);
-  const formatDate = date.getDay().toString() + "/" + date.getMonth().toString() + "/" + date.getFullYear().toString();
+  const formatDate = date.getDate().toString() + "/" + (date.getMonth() + 1).toString() + "/" + date.getFullYear().toString();
   const hours = date.getHours().toString().padStart(2, "0");
   const minutes = date.getMinutes().toString().padStart(2, "0");
   const seconds = date.getSeconds().toString().padStart(2, "0");

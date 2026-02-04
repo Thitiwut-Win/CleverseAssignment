@@ -8,6 +8,7 @@ import LogCard from "../(flightlog)/LogCard";
 import LogForm from "../(flightlog)/LogForm";
 import { FlightLog } from "@/types/FlightLog";
 import BoardingPassCard from "../(boardingpass)/BoardingPassCard";
+import { RouteStat } from "@/types/RouteStat";
 
 const flightLogService = new FlightLogService();
 
@@ -16,9 +17,12 @@ type AverageRecord = Record<
   { totalTime: number; count: number }
 >;
 
+type RouteAverageRecord = Record<string, RouteStat>;
+
 export default function Home() {
   const [logs, setLogs] = useState<FlightLog[]>([]);
   const [averageRecord, setAverageRecord] = useState<AverageRecord>({});
+  const [routeAverageRecord, setRouteAverageRecord] = useState<RouteAverageRecord>({});
   const [activeDepartures, setActiveDepartures] = useState<Record<string, { time: number; from: string }>>({});
   const [departureError, setDepartureError] = useState("");
   const [arrivalError, setArrivalError] = useState("");
@@ -69,6 +73,23 @@ export default function Home() {
         const duration = log.timestamp - departure.time;
         setLogs(prev => [...prev, log]);
 
+        const routeKey = `${departure.from}->${log.airport}`;
+
+        setRouteAverageRecord(prev => {
+          const current = prev[routeKey] ?? {
+            totalTime: 0,
+            count: 0,
+          };
+
+          return {
+            ...prev,
+            [routeKey]: {
+              totalTime: current.totalTime + duration,
+              count: current.count + 1,
+            },
+          };
+        });
+
         setAverageRecord(prevAvg => {
           const current = prevAvg[log.passengerName] ?? {
             totalTime: 0,
@@ -96,6 +117,7 @@ export default function Home() {
       setLogs(data);
 
       const avg: AverageRecord = {};
+      const routeAvg: RouteAverageRecord = {};
       const departures: Record<string, { time: number; from: string }> = {};
 
       for (const log of data) {
@@ -122,10 +144,22 @@ export default function Home() {
           avg[log.passengerName] = current;
 
           delete departures[log.passengerName];
+
+          const routeKey = `${dep.from}->${log.airport}`;
+
+          const routeCurrent = routeAvg[routeKey] ?? {
+            totalTime: 0,
+            count: 0,
+          };
+
+          routeCurrent.totalTime += duration;
+          routeCurrent.count += 1;
+          routeAvg[routeKey] = routeCurrent;
         }
       }
 
       setAverageRecord(avg);
+      setRouteAverageRecord(routeAvg);
       setActiveDepartures(departures);
     };
 
@@ -169,6 +203,28 @@ export default function Home() {
             onSubmit={handleAddLog}
           ></LogForm>
           <div style={{ color: "#ff3535", marginTop: "0.8rem" }}>{arrivalError}</div>
+        </div>
+        <div className={styles.card} style={{ margin: 16, width: "100%" }}>
+          <h2>Average Time Per Route</h2>
+
+          {Object.entries(routeAverageRecord).map(([route, stat]) => {
+            const avg = stat.totalTime / stat.count;
+
+            return (
+              <div
+                key={route}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "0.5rem"
+                }}
+              >
+                <span>
+                  {route}: {avg >= 3600 ? Math.round(avg / 3600) + " hour" : avg >= 60 ? Math.round(avg / 60) + " min" : avg + " sec"}
+                </span>
+              </div>
+            );
+          })}
         </div>
         <div className={styles.card} style={{ margin: 16, width: "100%" }}>
           <h2>Average Time Per Passenger</h2>
