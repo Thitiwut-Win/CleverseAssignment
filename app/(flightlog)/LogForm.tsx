@@ -34,49 +34,65 @@ function LogForm({ style, data, type, onSubmit }: { style?: CSSProperties, data:
 
   return (
     <form style={{ display: "flex", columnGap: 8, ...style }}>
-      <div
-        style={{ flex: 1, display: "flex", flexDirection: "column", rowGap: 4 }}
-      >
-        <label htmlFor="passengerName" style={{ fontWeight: "bold" }}>
-          Passenger Name:
-        </label>
-        <input
-          type="text"
-          id="passengerName"
-          name="passengerName"
-          value={formData.passengerName}
-          onChange={handleChange}
-        />
-      </div>
-      <div
-        style={{ flex: 1, display: "flex", flexDirection: "column", rowGap: 4 }}
-      >
-        <label htmlFor="airport" style={{ fontWeight: "bold" }}>
-          Airport:
-        </label>
-        <input
-          type="text"
-          id="airport"
-          name="airport"
-          value={formData.airport}
-          onChange={handleChange}
-        />
-      </div>
-      <div
-        style={{ flex: 1, display: "flex", flexDirection: "column", rowGap: 4 }}
-      >
-        <label htmlFor="timestamp" style={{ fontWeight: "bold" }}>
-          Timestamp:
-        </label>
-        <input
-          type="datetime-local"
-          id="timestamp"
-          value={formData.timestamp}
-          onChange={handleChange}
-        />
-      </div>
+      {[
+        { id: "passengerName", label: "Passenger Name", type: "text" },
+        { id: "airport", label: "Airport", type: "text" },
+        { id: "timestamp", label: "Date & Time", type: "datetime-local" },
+      ].map((field) => (
+        <div
+          key={field.id}
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: 6,
+          }}
+        >
+          <label
+            htmlFor={field.id}
+            style={{
+              fontSize: 13,
+              fontWeight: 600,
+              letterSpacing: "0.05em",
+              color: "#cbd5f5",
+            }}
+          >
+            {field.label.toUpperCase()}
+          </label>
+
+          <input
+            id={field.id}
+            type={field.type}
+            value={(formData as any)[field.id]}
+            onChange={handleChange}
+            style={{
+              padding: "10px 12px",
+              borderRadius: 10,
+              border: "1px solid rgba(255,255,255,0.12)",
+              background: "#434c769a",
+              color: "#e5e7eb",
+              fontFamily: "inherit",
+              outline: "none",
+              marginRight: "1rem"
+            }}
+          />
+        </div>
+      ))}
       <div style={{ flex: 1, display: "flex", alignItems: "flex-end" }}>
-        <button type="submit" onClick={(e) => { e.preventDefault(); handleSubmit(); }}>Submit</button>
+        <button type="submit" onClick={(e) => { e.preventDefault(); handleSubmit(); }}
+          style={{
+            padding: "10px 20px",
+            borderRadius: 999,
+            border: "none",
+            fontWeight: 700,
+            letterSpacing: "0.05em",
+            color: "white",
+            cursor: "pointer",
+            background: `linear-gradient(135deg, #3b82f6)`,
+            boxShadow: `0 8px 20px 55`,
+            transition: "transform 0.15s ease",
+          }}
+        >Submit</button>
       </div>
     </form>
   );

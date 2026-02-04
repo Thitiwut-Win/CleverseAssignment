@@ -15,12 +15,13 @@ function BoardingPassCard({ passengerName, from, to, departureTime, arrivalTime,
   return (
     <div
       style={{
-        border: "4px double #000",
-        borderRadius: 12,
+        border: "3px solid rgba(255,255,255,0.25)",
+        background: "linear-gradient(135deg, #020617, #0f172a)",
+        color: "#e5e7eb",
+        boxShadow: "0 20px 40px rgba(0,0,0,0.45)",
+        borderRadius: 20,
         padding: 16,
         maxWidth: 420,
-        background: "#f7f7f7",
-        fontFamily: "monospace",
         ...style,
       }}
     >
