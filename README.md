@@ -4,6 +4,7 @@
 4. Add input validation and error display to form
 5. Change timestamp display to date and time
 6. Decorate with CSS
+7. Add average time per route in O(1) (misunderstood for average time per person for the requirement in Number 1 and 2)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
