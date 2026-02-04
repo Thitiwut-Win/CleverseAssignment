@@ -152,7 +152,7 @@ export default function Home() {
           <h2>Flight Logs</h2>
           <LogCard style={{ width: "100%" }} data={logs}></LogCard>
         </div>
-        <div className={styles.card} style={{ margin: 16, width: "100%" }} onClick={() => setDepartureError("")}>
+        <div className={styles.card} style={{ margin: 16, width: "100%" }} onClick={() => { if (departureError !== "") setDepartureError("") }}>
           <h2>Departure Logging</h2>
           <LogForm
             style={{ width: "100%" }}
@@ -161,7 +161,7 @@ export default function Home() {
           ></LogForm>
           <div style={{ color: "#ff3535", marginTop: "0.8rem" }}>{departureError}</div>
         </div>
-        <div className={styles.card} style={{ margin: 16, width: "100%" }} onClick={() => setArrivalError("")}>
+        <div className={styles.card} style={{ margin: 16, width: "100%" }} onClick={() => { if (arrivalError !== "") setArrivalError("") }}>
           <h2>Arrival Logging</h2>
           <LogForm
             style={{ width: "100%" }}
