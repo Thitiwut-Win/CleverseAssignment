@@ -20,17 +20,35 @@ export default function Home() {
   const [logs, setLogs] = useState<FlightLog[]>([]);
   const [averageRecord, setAverageRecord] = useState<AverageRecord>({});
   const [activeDepartures, setActiveDepartures] = useState<Record<string, { time: number; from: string }>>({});
+  const [departureError, setDepartureError] = useState("");
+  const [arrivalError, setArrivalError] = useState("");
 
   const handleAddLog = (log: FlightLog) => {
-    if (!log.passengerName || !log.airport || !log.timestamp) return;
+    if (!log.passengerName || !log.airport || !log.timestamp) {
+      if (log.type === "arrival") setArrivalError("All fields are required");
+      else setDepartureError("All fields are required");
+      return;
+    }
 
-    if (log.type === "arrival" && !activeDepartures[log.passengerName]) return;
+    if (log.type === "arrival" && !activeDepartures[log.passengerName]) {
+      setArrivalError("Arrival cannot be logged before departure");
+      return;
+    }
 
-    if (log.type === "arrival" && log.timestamp < activeDepartures[log.passengerName].time) return;
+    if (log.type === "arrival" && log.timestamp < activeDepartures[log.passengerName].time) {
+      setArrivalError("Arrival time cannot be before departure time");
+      return;
+    }
 
-    if (log.type === "arrival" && log.airport === activeDepartures[log.passengerName].from) return;
+    if (log.type === "arrival" && log.airport === activeDepartures[log.passengerName].from) {
+      setArrivalError("Departure and arrival airport cannot be the same");
+      return;
+    }
 
-    if (log.type === "departure" && activeDepartures[log.passengerName]) return;
+    if (log.type === "departure" && activeDepartures[log.passengerName]) {
+      setArrivalError("Passenger must arrive before departing again");
+      return;
+    }
 
     if (log.type === "departure") {
       setActiveDepartures(prev => ({
@@ -134,21 +152,23 @@ export default function Home() {
           <h2>Flight Logs</h2>
           <LogCard style={{ width: "100%" }} data={logs}></LogCard>
         </div>
-        <div className={styles.card} style={{ margin: 16, width: "100%" }}>
+        <div className={styles.card} style={{ margin: 16, width: "100%" }} onClick={() => setDepartureError("")}>
           <h2>Departure Logging</h2>
           <LogForm
             style={{ width: "100%" }}
             type={"departure"}
             onSubmit={handleAddLog}
           ></LogForm>
+          <div style={{ color: "#ff3535", marginTop: "0.8rem" }}>{departureError}</div>
         </div>
-        <div className={styles.card} style={{ margin: 16, width: "100%" }}>
+        <div className={styles.card} style={{ margin: 16, width: "100%" }} onClick={() => setArrivalError("")}>
           <h2>Arrival Logging</h2>
           <LogForm
             style={{ width: "100%" }}
             type={"arrival"}
             onSubmit={handleAddLog}
           ></LogForm>
+          <div style={{ color: "#ff3535", marginTop: "0.8rem" }}>{arrivalError}</div>
         </div>
         <div className={styles.card} style={{ margin: 16, width: "100%" }}>
           <h2>Average Time Per Passenger</h2>
