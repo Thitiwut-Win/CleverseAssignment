@@ -1,3 +1,10 @@
+1. Did requirement with print to console button in /(home)/page.tsx.
+2. Extra: by optimizing to O(1) by storing totalTime and travel count in useState to avoid recomputing every time.
+3. Challenge: Add boarding pass using data from logs
+4. Add input validation and error display to form
+5. Change timestamp display to date and time
+6. Decorate with CSS
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
